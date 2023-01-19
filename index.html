@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Course</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="./bulma-calendar.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="./bulma-calendar.min.css">
+
+</head>
+<script type="text/javascript">
+    Telegram.WebApp.ready();
+    Telegram.WebApp.MainButton.setText('Записаться').show().onClick(function () {
+        const data = JSON.stringify({name: "", level: "", date: ""});
+        Telegram.WebApp.sendData(data);
+        Telegram.WebApp.close();
+    });
+</script>
+<body>
+    <section class="section">
+        <div class="container">
+            <div class="column is-half is-offset-one-quarter">
+                <form action="">
+                    <div class="field">
+                        <label class="label">Name</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Your name" id="name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Date</label>
+                        <div class="control">
+                            <input class="input" type="date" placeholder="01.02.2003" id="date" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Level</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select id="level">
+                                  <option>Select</option>
+                                  <option>With options</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</body>
+<script type="text/javascript">
+    const calendars = bulmaCalendar.attach('[type="date"]', {type: "date", color: "link"});
+    calendars.forEach(calendar => {
+        calendar.on('select', date => {
+            console.log(date);
+        });
+    });
+    Telegram.WebApp.expand();
+</script>
+</html>

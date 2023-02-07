@@ -19,7 +19,7 @@
     const inputLevel = document.getElementById("level");
 
     Telegram.WebApp.ready();
-    Telegram.WebApp.MainButton.setText('Register').show().onClick(function () {
+    Telegram.WebApp.MainButton.setText("Register").show().onClick(function () {
         const data = JSON.stringify(
             {
                 name: inputName.value,
@@ -27,6 +27,7 @@
                 date: inputDate.value
             }
         );
+        console.log(data);
         Telegram.WebApp.sendData(data);
         Telegram.WebApp.close();
     });
@@ -70,7 +71,7 @@
     const calendars = bulmaCalendar.attach('[type="date"]', {type: "date", color: "link"});
     calendars.forEach(calendar => {
         calendar.on('select', date => {
-            console.log(date);
+            // console.log(date);
         });
     });
     Telegram.WebApp.expand();

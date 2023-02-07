@@ -12,17 +12,24 @@
     <title></title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./bulma-calendar.min.js"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="./bulma-calendar.min.css">
+
+    <style type="text/css">
+        #no {
+            display: none;
+        }
+    </style>
 </head>
 
-<body>
+<body onload="checkApplicationByUserID()">
     <section class="section">
         <div class="container">
             <div class="column is-half is-offset-one-quarter">
-                <form action="">
+                <form id="form" action="">
                     <div class="field">
                         <label class="label">Name</label>
                         <div class="control">
@@ -47,7 +54,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="field">
+                        <div class="control">
+                            <button
+                                type="button"
+                                class="button is-primary is-pulled-right"
+                                onclick="applyNew()">Apply</button>
+                        </div>
+                    </div>
                 </form>
+                <p id="no">
+                    You have registered.
+                    <br>
+                    <span id="application-info"></span>
+                </p>
             </div>
         </div>
     </section>
@@ -64,19 +84,65 @@
     Telegram.WebApp.ready();
 
     const initData = Telegram.WebApp.initData || '';
-    const initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
+    // const initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
+    const initDataUnsafe = {
+        user: {
+            id: 1234,
+            username: "cfvgbhj"
+        }
+    };
+
+    const form = document.getElementById("form");
+    const no = document.getElementById("no");
+    const application_info = document.getElementById("application-info");
 
     const inputName = document.getElementById("name");
     const inputDate = document.getElementById("date");
     const inputLevel = document.getElementById("level");
 
-    console.log(initData);
-    console.log(initDataUnsafe);
+    axios.defaults.baseURL = "http://localhost:8080/";
 
     Telegram.WebApp.MainButton
-        .setText('Finish')
+        .setText("Close")
         .onClick(function(){ Telegram.WebApp.close(); });
 
-    Telegram.WebApp.expand();
+    // Telegram.WebApp.expand();
+
+    function checkApplicationByUserID() {
+        axios.get("applications/?tg_id=" + initDataUnsafe.user.id)
+            .then(function (response) {
+                if (response.data.length) {
+                    const app = response.data[0];
+                    form.style.display = "none";
+                    no.style.display = "block";
+                    application_info.innerHTML = "<b>Name:</b> " + app.name + "<br>" + "<b>Date:</b> " + app.date;
+                    Telegram.WebApp.MainButton.show();
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    function applyNew() {
+        axios.post("applications/", {
+            tg_id: initDataUnsafe.user.id,
+            tg_username: initDataUnsafe.user.username,
+            name: inputName.value,
+            date: inputDate.value,
+            level: inputLevel.value
+        })
+            .then(function (response) {
+                const app = response.data;
+                form.style.display = "none";
+                no.style.display = "block";
+                application_info.innerHTML = "<b>Name:</b> " + app.name + "<br>" + "<b>Date:</b> " + app.date;
+                Telegram.WebApp.MainButton.show();
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        Telegram.WebApp.MainButton.show();
+    }
 </script>
 </html>

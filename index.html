@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Course</title>
+    <title>English class</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="./bulma-calendar.min.js"></script>
@@ -14,9 +14,19 @@
 
 </head>
 <script type="text/javascript">
+    const inputName = document.getElementById("name");
+    const inputDate = document.getElementById("date");
+    const inputLevel = document.getElementById("level");
+
     Telegram.WebApp.ready();
     Telegram.WebApp.MainButton.setText('Записаться').show().onClick(function () {
-        const data = JSON.stringify({name: "", level: "", date: ""});
+        const data = JSON.stringify(
+            {
+                name: inputName.value,
+                level: inputLevel.value,
+                date: inputDate.value
+            }
+        );
         Telegram.WebApp.sendData(data);
         Telegram.WebApp.close();
     });
@@ -43,8 +53,9 @@
                         <div class="control">
                             <div class="select is-fullwidth">
                                 <select id="level">
-                                  <option>Select</option>
-                                  <option>With options</option>
+                                    <option value="elementary">Elementary</option>
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate">Intermediate</option>
                                 </select>
                             </div>
                         </div>

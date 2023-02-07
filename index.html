@@ -2,36 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="MobileOptimized" content="176" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="robots" content="noindex,nofollow" />
 
-    <title>English class</title>
+    <title></title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="./bulma-calendar.min.js"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="./bulma-calendar.min.css">
-
 </head>
-<script type="text/javascript">
-    const inputName = document.getElementById("name");
-    const inputDate = document.getElementById("date");
-    const inputLevel = document.getElementById("level");
 
-    Telegram.WebApp.ready();
-    Telegram.WebApp.MainButton.setText("Register").show().onClick(function () {
-        const data = JSON.stringify(
-            {
-                name: inputName.value,
-                level: inputLevel.value,
-                date: inputDate.value
-            }
-        );
-        console.log(data);
-        Telegram.WebApp.sendData(data);
-        Telegram.WebApp.close();
-    });
-</script>
 <body>
     <section class="section">
         <div class="container">
@@ -74,6 +60,23 @@
             // console.log(date);
         });
     });
+
+    Telegram.WebApp.ready();
+
+    const initData = Telegram.WebApp.initData || '';
+    const initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
+
+    const inputName = document.getElementById("name");
+    const inputDate = document.getElementById("date");
+    const inputLevel = document.getElementById("level");
+
+    console.log(initData);
+    console.log(initDataUnsafe);
+
+    Telegram.WebApp.MainButton
+        .setText('Finish')
+        .onClick(function(){ Telegram.WebApp.close(); });
+
     Telegram.WebApp.expand();
 </script>
 </html>
